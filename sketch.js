@@ -15,6 +15,7 @@ function setup(){
     engine = Engine.create();
     world = engine.world;
 
+    //milk is good
 
     ground = new Ground(600,height,1200,20);
     platform = new Ground(150, 305, 300, 170);
