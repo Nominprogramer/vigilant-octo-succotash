@@ -4,10 +4,11 @@ const Bodies = Matter.Bodies;
 
 var engine, world;
 var box1, pig1;
-var backgroundImg,platform;
+var backgroundImg,bg2,platform;
 
 function preload() {
-    backgroundImg = loadImage("sprites/bg.png");
+
+    getTime();
 }
 
 function setup(){
@@ -15,7 +16,7 @@ function setup(){
     engine = Engine.create();
     world = engine.world;
 
-    //milk is good
+    //milk is good op nice
 
     ground = new Ground(600,height,1200,20);
     platform = new Ground(150, 305, 300, 170);
@@ -34,18 +35,17 @@ function setup(){
     box5 = new Box(810,160,70,70);
     log4 = new Log(760,120,150, PI/7);
     log5 = new Log(870,120,150, -PI/7);
-    log6 = new Log(200,200,100,PI/2);
 
     bird = new Bird(100,100);
-    chainy = new chain(bird.body,log6.body,200,0.5);
+    chainy = new Sling(bird.body,{x:200,y:70},0.5,1);
+
+    getTime();
 }
 
 function draw(){
+    if(backgroundImg)
     background(backgroundImg);
     Engine.update(engine);
-    console.log(box2.body.position.x);
-    console.log(box2.body.position.y);
-    console.log(box2.body.angle);
     box1.display();
     box2.display();
     ground.display();
@@ -60,9 +60,42 @@ function draw(){
     box5.display();
     log4.display();
     log5.display();
-    log6.display();
 
     bird.display();
     chainy.display();
     platform.display();
+}
+ function mouseDragged() {
+    Matter.Body.setPosition(bird.body,{x:mouseX,y:mouseY})
+  }
+
+function mouseReleased(){
+    chainy.KillConstraint();
+}
+
+function keyPressed(){
+    if(keyCode === 32){
+        chainy.attach(bird.body);
+    }
+}
+
+async function getTime()
+{
+    let api = await fetch("https://worldtimeapi.org/api/timezone/Asia/Tokyo")
+    console.log(api)
+    let dat = await api.json();
+    console.log(dat);
+    
+    let t = dat.datetime.slice(11,13);
+
+    if(t>6 && t<19)
+    {
+        bg = ("sprites/bg.png")
+    }
+
+    else{
+        bg = ("sprites/bg2.jpg")
+    }
+
+    backgroundImg = loadImage(bg);
 }
