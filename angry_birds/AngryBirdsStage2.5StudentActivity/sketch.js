@@ -5,6 +5,7 @@ const Bodies = Matter.Bodies;
 var engine, world;
 var box1, pig1;
 var backgroundImg,bg2,platform;
+let score = 0
 
 function preload() {
 
@@ -37,7 +38,7 @@ function setup(){
     log5 = new Log(870,120,150, -PI/7);
 
     bird = new Bird(100,100);
-    chainy = new Sling(bird.body,{x:200,y:70},0.5,1);
+    chainy = new Sling(bird.body,{x:200,y:70},0.1,0.1);
 
     getTime();
 }
@@ -64,6 +65,13 @@ function draw(){
     bird.display();
     chainy.display();
     platform.display();
+
+    pig3.score();
+    pig1.score()
+
+    fill("white")
+    textSize(25);
+    text(score,1000,50);
 }
  function mouseDragged() {
     Matter.Body.setPosition(bird.body,{x:mouseX,y:mouseY})
@@ -75,7 +83,9 @@ function mouseReleased(){
 
 function keyPressed(){
     if(keyCode === 32){
+        Matter.Body.setPosition(bird.body,{x:200,y:70})
         chainy.attach(bird.body);
+        bird.oparry = []
     }
 }
 
